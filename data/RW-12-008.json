@@ -1,0 +1,20 @@
+{
+  "project_id": "RW-12-008",
+  "project_name": "Bhopal\u2013Vidisha Rail Doubling",
+  "project_type": "Railway",
+  "state": "Madhya Pradesh",
+  "district": "Bhopal",
+  "latitude": 23.2599,
+  "longitude": 77.4126,
+  "land_area": 210.0,
+  "affected_families": 95,
+  "documentation_completion": 92.0,
+  "compensation_completion": 88.0,
+  "legal_disputes": 1,
+  "approval_delay_days": 6,
+  "rr_completion": 90.0,
+  "possession_completion": 85.0,
+  "stakeholder_response_days": 3,
+  "historical_delay_rate": 11.0,
+  "data_note": "Prototype demo values. Not a real government record."
+}

@@ -1,0 +1,20 @@
+{
+  "project_id": "IC-09-021",
+  "project_name": "Dewas Industrial Corridor Extension",
+  "project_type": "Industrial Corridor",
+  "state": "Madhya Pradesh",
+  "district": "Dewas",
+  "latitude": 22.9623,
+  "longitude": 76.0534,
+  "land_area": 610.0,
+  "affected_families": 720,
+  "documentation_completion": 55.0,
+  "compensation_completion": 40.0,
+  "legal_disputes": 11,
+  "approval_delay_days": 55,
+  "rr_completion": 30.0,
+  "possession_completion": 20.0,
+  "stakeholder_response_days": 14,
+  "historical_delay_rate": 38.0,
+  "data_note": "Prototype demo values. Not a real government record."
+}

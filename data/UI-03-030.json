@@ -1,0 +1,20 @@
+{
+  "project_id": "UI-03-030",
+  "project_name": "Gwalior Metro Corridor Land Parcel",
+  "project_type": "Urban Infrastructure",
+  "state": "Madhya Pradesh",
+  "district": "Gwalior",
+  "latitude": 26.2183,
+  "longitude": 78.1828,
+  "land_area": 95.0,
+  "affected_families": 260,
+  "documentation_completion": 70.0,
+  "compensation_completion": 68.0,
+  "legal_disputes": 5,
+  "approval_delay_days": 18,
+  "rr_completion": 60.0,
+  "possession_completion": 50.0,
+  "stakeholder_response_days": 8,
+  "historical_delay_rate": 24.0,
+  "data_note": "Prototype demo values. Not a real government record."
+}

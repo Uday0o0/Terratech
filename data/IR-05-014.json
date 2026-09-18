@@ -1,0 +1,20 @@
+{
+  "project_id": "IR-05-014",
+  "project_name": "Betul Canal Modernisation",
+  "project_type": "Irrigation",
+  "state": "Madhya Pradesh",
+  "district": "Betul",
+  "latitude": 21.9022,
+  "longitude": 77.9006,
+  "land_area": 340.0,
+  "affected_families": 410,
+  "documentation_completion": 65.0,
+  "compensation_completion": 58.0,
+  "legal_disputes": 3,
+  "approval_delay_days": 15,
+  "rr_completion": 55.0,
+  "possession_completion": 40.0,
+  "stakeholder_response_days": 7,
+  "historical_delay_rate": 22.0,
+  "data_note": "Prototype demo values. Not a real government record."
+}
