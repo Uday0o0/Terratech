@@ -1,6 +1,6 @@
 """
 TerraTech — Land Acquisition Risk Intelligence
-Smart India Hackathon proof-of-concept | Single-project demonstration
+Smart India Hackathon proof-of-concept | Multi-project demonstration
 
 UI LAYER ONLY.
 
@@ -35,7 +35,10 @@ st.set_page_config(
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parent
-DEMO_PROJECT_PATH = PROJECT_ROOT / "data" / "demo_project.json"
+# data/demo_project.json (used by test_block3.py) is left untouched. The
+# picker reads its own set of project files from data/projects/ instead —
+# NH-47-024 has a copy there so it still appears as one of the choices.
+PROJECTS_DIR = PROJECT_ROOT / "data" / "projects"
 
 
 # ===========================================================================
@@ -388,9 +391,15 @@ def run_analysis(project_json: str) -> dict:
 
 
 @st.cache_data(show_spinner=False)
-def load_demo_project() -> dict:
-    with open(DEMO_PROJECT_PATH) as f:
-        return json.load(f)
+def load_all_projects() -> dict:
+    """Every project JSON under data/projects/, keyed by project_id."""
+    files = sorted(PROJECTS_DIR.glob("*.json"))
+    projects = {}
+    for pf in files:
+        with open(pf) as f:
+            p = json.load(f)
+        projects[p["project_id"]] = p
+    return projects
 
 
 # ===========================================================================
@@ -459,7 +468,17 @@ def shap_bar_svg(contributors: list) -> str:
 # ===========================================================================
 # SIDEBAR
 # ===========================================================================
-project = load_demo_project()
+ALL_PROJECTS = load_all_projects()
+if not ALL_PROJECTS:
+    st.error(f"No project files found in {PROJECTS_DIR}")
+    st.stop()
+
+# Selection lives in session_state so it is available before the sidebar
+# widget itself has rendered on this rerun.
+if "selected_project_id" not in st.session_state:
+    st.session_state["selected_project_id"] = next(iter(ALL_PROJECTS))
+
+project = ALL_PROJECTS[st.session_state["selected_project_id"]]
 
 PARAMETER_FIELDS = [
     ("Project type", project["project_type"], ""),
@@ -483,6 +502,19 @@ with st.sidebar:
         '<div><div class="tt-brand-name">TerraTech</div>'
         '<div class="tt-brand-role">Officer console</div></div></div>'
     )
+
+    html('<div class="tt-side-label">Select project</div>')
+    selected_id = st.selectbox(
+        "Project",
+        options=list(ALL_PROJECTS.keys()),
+        format_func=lambda pid: f"{pid} — {ALL_PROJECTS[pid]['project_name']}",
+        label_visibility="collapsed",
+        key="selected_project_id",
+    )
+    # `project` (set above, before this block ran) already reflects
+    # st.session_state["selected_project_id"] as of this rerun — Streamlit
+    # updates a widget's session_state key before the script re-executes,
+    # so no reassignment is needed here.
 
     nav = st.radio("Navigation", NAV_ITEMS, label_visibility="collapsed", key="nav")
 
@@ -524,20 +556,29 @@ html(
 
 
 # ===========================================================================
-# ANALYSIS STATE
+# ANALYSIS STATE — gated PER PROJECT
+#
+# run_analysis() is cached on the project's own JSON content, so re-analyzing
+# a project you've already scored is a cache hit, not a recomputation. The
+# separate "analyzed_ids" set only controls whether we've shown a result for
+# THIS project yet — switching the dropdown to a project you haven't clicked
+# "Run risk analysis" for shows the empty state instead of a stale result
+# left over from whichever project was analyzed previously.
 # ===========================================================================
-if analyze_clicked:
-    with st.spinner("Running model inference…"):
-        st.session_state["analysis"] = run_analysis(json.dumps(project, sort_keys=True))
+st.session_state.setdefault("analyzed_ids", set())
 
-if "analysis" not in st.session_state:
+if analyze_clicked:
+    st.session_state["analyzed_ids"].add(project["project_id"])
+
+if project["project_id"] not in st.session_state["analyzed_ids"]:
     html(
         '<div class="tt-empty">Select <b>Run risk analysis</b> in the sidebar to score '
         f'{project["project_id"]} with the trained model.</div>'
     )
     st.stop()
 
-analysis = st.session_state["analysis"]
+with st.spinner("Running model inference…"):
+    analysis = run_analysis(json.dumps(project, sort_keys=True))
 result = analysis["result"]
 category = result["risk_category"]
 band_color = BAND_HEX[category]
@@ -711,7 +752,7 @@ elif nav == NAV_ITEMS[1]:
 
     section(
         "Project register",
-        "Single-project demonstration. One record is scored end to end.",
+        "The project currently selected in the sidebar, scored end to end.",
     )
     html(
         '<table class="tt-table"><thead><tr>'
