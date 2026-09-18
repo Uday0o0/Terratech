@@ -1,0 +1,20 @@
+{
+  "project_id": "NH-47-024",
+  "project_name": "NH-47 Four-Laning \u2014 Indore Section",
+  "project_type": "Highway",
+  "state": "Madhya Pradesh",
+  "district": "Indore",
+  "latitude": 22.7196,
+  "longitude": 75.8577,
+  "land_area": 482.0,
+  "affected_families": 348,
+  "documentation_completion": 78.0,
+  "compensation_completion": 62.0,
+  "legal_disputes": 8,
+  "approval_delay_days": 21,
+  "rr_completion": 48.0,
+  "possession_completion": 35.0,
+  "stakeholder_response_days": 9,
+  "historical_delay_rate": 27.0,
+  "data_note": "Prototype demo values. Not a real government record."
+}
