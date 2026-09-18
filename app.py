@@ -503,7 +503,7 @@ with st.sidebar:
         '<div class="tt-brand-role">Officer console</div></div></div>'
     )
 
-    html('<div class="tt-side-label">Select project</div>')
+    html('<div class="tt-side-label" style="margin-top:0;padding-top:0;border-top:none;">Select project</div>')    
     selected_id = st.selectbox(
         "Project",
         options=list(ALL_PROJECTS.keys()),
