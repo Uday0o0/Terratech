@@ -322,7 +322,13 @@ div[data-testid="stMain"] .stButton > button:hover {{ border-color:var(--teal); 
 .tt-card-title {{ font-family:'Fraunces',Georgia,serif; font-size:15px; font-weight:600; color:var(--ink); margin-bottom:12px; }}
 
 /* ---------- Map ---------- */
-iframe[title="streamlit_folium.st_folium"] {{ border-radius:10px; border:1px solid var(--rule); min-height:330px; width:100% !important; }}
+/* Fixed to a hard height (not just min-height) so the component's iframe
+   can never leave an oversized empty region below the visible tiles. */
+iframe[title="streamlit_folium.st_folium"] {{
+    border-radius:10px; border:1px solid var(--rule);
+    height:330px !important; max-height:330px !important;
+    width:100% !important; overflow:hidden;
+}}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {{
@@ -656,7 +662,15 @@ elif nav == NAV_ITEMS[1]:
                 max_width=260,
             ),
         ).add_to(fmap)
-        st_folium(fmap, height=330, use_container_width=True, returned_objects=[])
+        # returned_objects carries a minimal payload so the component's
+        # auto-resize channel keeps firing; without it the iframe can fall
+        # back to an oversized default height (the "black box" bug).
+        st_folium(
+            fmap,
+            height=330,
+            use_container_width=True,
+            returned_objects=["last_object_clicked"],
+        )
         html(
             '<div style="display:flex; gap:14px; margin-top:10px; font-size:11.5px; '
             'color:var(--ink-soft);">'
