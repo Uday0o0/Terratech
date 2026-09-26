@@ -187,10 +187,10 @@ def seed_users() -> dict:
     pw = hash_password("terratech2026")
     users = {}
 
-    # Government officials (2)
+    # Government officials & Admin (2)
     gov_users = [
-        ("admin@terratech.demo", "Rajesh Kumar Sharma", "government",
-         "District Collector", "District Administration", "Madhya Pradesh", "Bhopal"),
+        ("admin@terratech.demo", "Rajesh Kumar Sharma", "admin",
+         "Super Admin", "Central Administration", "Delhi", "New Delhi"),
         ("officer@terratech.demo", "Priya Nair", "government",
          "Additional Collector", "Revenue Department", "Maharashtra", "Pune"),
     ]
@@ -761,3 +761,27 @@ def seed_all():
     seed_issues()
     seed_alerts()
     seed_activity_log()
+    seed_relations()
+
+def seed_relations():
+    from src.database import get_db
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT id FROM users WHERE role='government'")
+    officers = [r[0] for r in c.fetchall()]
+    if officers:
+        c.execute("SELECT id FROM users WHERE role='employee'")
+        employees = [r[0] for r in c.fetchall()]
+        for i, emp_id in enumerate(employees):
+            off_id = officers[i % len(officers)]
+            c.execute("UPDATE users SET manager_id=? WHERE id=?", (off_id, emp_id))
+            
+    c.execute("SELECT parcel_id FROM landowners LIMIT 10")
+    parcels = [r[0] for r in c.fetchall()]
+    if parcels:
+        c.execute("SELECT id FROM users WHERE role='citizen'")
+        citizens = [r[0] for r in c.fetchall()]
+        for i, cit_id in enumerate(citizens):
+            p_id = parcels[i % len(parcels)]
+            c.execute("UPDATE users SET citizen_parcel_id=? WHERE id=?", (p_id, cit_id))
+    conn.commit()
