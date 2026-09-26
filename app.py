@@ -55,6 +55,20 @@ def render():
             f'</div>'
         )
 
+        html(
+            f'<div style="position:fixed; top:20px; right:20px; background:var(--paper); border:1px solid var(--rule); '
+            f'border-radius:12px; padding:16px; font-size:12.5px; z-index:9999; box-shadow:0 8px 24px rgba(0,0,0,0.12);">'
+            f'<strong style="font-size:14px; margin-bottom:10px; display:block; color:var(--ink)">Demo Credentials</strong>'
+            f'<div style="margin:0 0 12px; color:var(--ink-soft);">Password for all: <code style="background:var(--cream-2);padding:2px 6px;border-radius:4px;color:var(--teal)">terratech2026</code></div>'
+            f'<div style="display:flex; flex-direction:column; gap:8px;">'
+            f'<div style="display:flex; justify-content:space-between; gap:20px;"><span style="color:var(--ink-soft)">Admin</span> <code style="background:var(--cream-2);padding:2px 6px;border-radius:4px;color:var(--ink)">admin@terratech.demo</code></div>'
+            f'<div style="display:flex; justify-content:space-between; gap:20px;"><span style="color:var(--ink-soft)">Officer</span> <code style="background:var(--cream-2);padding:2px 6px;border-radius:4px;color:var(--ink)">officer@terratech.demo</code></div>'
+            f'<div style="display:flex; justify-content:space-between; gap:20px;"><span style="color:var(--ink-soft)">Employee</span> <code style="background:var(--cream-2);padding:2px 6px;border-radius:4px;color:var(--ink)">emp01@terratech.demo</code></div>'
+            f'<div style="display:flex; justify-content:space-between; gap:20px;"><span style="color:var(--ink-soft)">Citizen</span> <code style="background:var(--cream-2);padding:2px 6px;border-radius:4px;color:var(--ink)">citizen@terratech.demo</code></div>'
+            f'</div>'
+            f'</div>'
+        )
+
         with st.container():
             c1, c2, c3 = st.columns([1, 1, 1])
             with c2:
